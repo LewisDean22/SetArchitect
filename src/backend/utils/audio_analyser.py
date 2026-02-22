@@ -1,6 +1,6 @@
 from pathlib import Path
 import threading
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 import numpy as np
 import librosa
@@ -97,11 +97,19 @@ def perform_audio_analysis(filepath: str) -> TrackAnalysis:
 def perform_batch_audio_analysis(filepaths: list[str],
                                  max_workers: int = 3
                                  ) -> list[TrackAnalysis]:
-    # TODO - update so one file faulting doesn't abort the whole batch
+    results = {}
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        track_analyses = list(executor.map(perform_audio_analysis, filepaths))
+        futures = {executor.submit(perform_audio_analysis, f):
+                   f for f in filepaths}
 
-    return track_analyses
+        for future in as_completed(futures):
+            filename = futures[future]
+            try:
+                results[filename] = future.result()
+            except Exception as e:
+                print(f"{filename} failed: {e}")
+                # switch to raising error to FastAPI?
+    return results
 
 
 if __name__ == "__main__":
