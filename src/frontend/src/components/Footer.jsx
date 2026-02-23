@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="footer">
-      <p>SetArchitect</p>
+      Set Architect by <a href="mailto:lewisdean22@outlook.com">Lewis</a>
     </footer>
   )
 }

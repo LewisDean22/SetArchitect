@@ -1,8 +1,11 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem ;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .logo {
@@ -37,6 +40,3 @@
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
-}
