@@ -1,13 +1,11 @@
 from pathlib import Path
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dataclasses import dataclass
 import numpy as np
 import librosa
 from deeprhythm import DeepRhythmPredictor
 from mutagen import File
-
-TEST_FOLDER_PATH = r"C:\Users\lewis\Desktop\Mixes\Mix-1"
+from ..schemas import TrackAnalysis
 
 # Private globals
 _model = DeepRhythmPredictor()
@@ -24,14 +22,6 @@ MINOR_PROFILE = np.array([6.33, 2.68, 3.52, 5.38, 2.60, 3.53,
                          dtype=np.float32)
 NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F',
               'F#', 'G', 'G#', 'A', 'A#', 'B']
-
-
-@dataclass
-class TrackAnalysis:
-    track_name: str
-    bpm: int
-    key: str
-    mode: str
 
 
 def read_setlist_filepaths(mix_directory: str) -> list[str]:
@@ -97,7 +87,7 @@ def perform_audio_analysis(filepath: str) -> TrackAnalysis:
 def perform_batch_audio_analysis(filepaths: list[str],
                                  max_workers: int = 3
                                  ) -> list[TrackAnalysis]:
-    results = {}
+    results = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = {executor.submit(perform_audio_analysis, f):
                    f for f in filepaths}
@@ -105,14 +95,8 @@ def perform_batch_audio_analysis(filepaths: list[str],
         for future in as_completed(futures):
             filename = futures[future]
             try:
-                results[filename] = future.result()
+                results.append(future.result())
             except Exception as e:
                 print(f"{filename} failed: {e}")
                 # switch to raising error to FastAPI?
     return results
-
-
-if __name__ == "__main__":
-    filepaths = read_setlist_filepaths(TEST_FOLDER_PATH)
-    track_analyses = perform_batch_audio_analysis(filepaths)
-    print(track_analyses)

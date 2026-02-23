@@ -2,3 +2,4 @@ TODO.md
 __pycache__/
 .venv
 src/backend/utils/yt_playlist_scraper.py
+test_script.py
