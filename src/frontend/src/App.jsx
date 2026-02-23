@@ -1,19 +1,14 @@
-import { useState } from 'react'
+import Header from './components/Header'
+import MainPanel from './components/MainPanel'
+import Footer from './components/Footer'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <h1>Set Architect</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count = {count}
-        </button>
-      </div>
-    </>
+    <div className="layout">
+      <Header />
+      <MainPanel />
+      <Footer />
+    </div>
   )
 }
-
-export default App
