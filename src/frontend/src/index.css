@@ -22,7 +22,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: #3A015C;
+  color: #c6a7d4;
 }
 
 body {
@@ -58,7 +58,8 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  transform: scale(1.02);
+  transition: all 0.2s ease;
 }
 button:focus,
 button:focus-visible {
@@ -81,7 +82,6 @@ button:focus-visible {
 .layout {
   display: flex;
   flex-direction: column;
-  /* height: 100vh; */
   width: 100%;
 }
 
@@ -97,6 +97,7 @@ button:focus-visible {
 }
 
 .main {
+  padding: 2rem;
   flex: 1;
   min-height: 80vh;
   overflow-y: auto;

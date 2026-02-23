@@ -4,6 +4,7 @@ __pycache__/
 .venv
 src/backend/utils/yt_playlist_scraper.py
 test_script.py
+start.sh
 
 # Frontend
 src/frontend/node_modules
