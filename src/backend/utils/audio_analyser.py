@@ -1,11 +1,12 @@
 from pathlib import Path
+import io
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import numpy as np
 import librosa
 from deeprhythm import DeepRhythmPredictor
 from mutagen import File
-from ..schemas import TrackAnalysis
+from backend.schemas import Track, Tracklist
 
 # Private globals
 _model = DeepRhythmPredictor()
@@ -71,12 +72,12 @@ def detect_audio_tempo(audio: np.ndarray, sr: int) -> tuple[float, float]:
     # to a user.
 
 
-def perform_audio_analysis(filepath: str) -> TrackAnalysis:
+def perform_audio_analysis_on_file(filepath: str) -> Track:
     audio, sr = load_audio(filepath)
     key, mode = detect_audio_key(audio, sr)
     with _thread_lock:
         tempo, confidence = detect_audio_tempo(audio, sr)
-    return TrackAnalysis(
+    return Track(
                 track_name=extract_track_title(filepath),
                 bpm=round(tempo),
                 key=key,
@@ -84,12 +85,25 @@ def perform_audio_analysis(filepath: str) -> TrackAnalysis:
             )
 
 
-def perform_batch_audio_analysis(filepaths: list[str],
-                                 max_workers: int = 3
-                                 ) -> list[TrackAnalysis]:
+def perform_audio_analysis_on_bytes(track_name: str, bytes: bytes) -> Track:
+    audio, sr = load_audio(io.BytesIO(bytes))
+    key, mode = detect_audio_key(audio, sr)
+    with _thread_lock:
+        tempo, confidence = detect_audio_tempo(audio, sr)
+    return Track(
+                track_name=track_name,
+                bpm=round(tempo),
+                key=key,
+                mode=mode
+            )
+
+
+def perform_batch_audio_analysis_on_files(filepaths: list[str],
+                                          max_workers: int = 3
+                                          ) -> Tracklist:
     results = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {executor.submit(perform_audio_analysis, f):
+        futures = {executor.submit(perform_audio_analysis_on_file, f):
                    f for f in filepaths}
 
         for future in as_completed(futures):
@@ -98,5 +112,24 @@ def perform_batch_audio_analysis(filepaths: list[str],
                 results.append(future.result())
             except Exception as e:
                 print(f"{filename} failed: {e}")
+                # switch to raising error to FastAPI?
+    return results
+
+
+def perform_batch_audio_analysis_on_bytes(track_names: list[str],
+                                          bytes_list: list[bytes],
+                                          max_workers: int = 3
+                                          ) -> Tracklist:
+    results = []
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(perform_audio_analysis_on_bytes, name, b):
+                   name for name, b in zip(track_names, bytes_list)}
+
+        for future in as_completed(futures):
+            try:
+                results.append(future.result())
+            except Exception as e:
+                track_name = futures[future]
+                print(f"{track_name} failed: {e}")
                 # switch to raising error to FastAPI?
     return results

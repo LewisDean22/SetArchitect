@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class TrackAnalysis(BaseModel):
+class Track(BaseModel):
     """
     Originally all but the first parameters were optional,
     but this is first used as a response model after audio analysis,
@@ -13,5 +13,5 @@ class TrackAnalysis(BaseModel):
     mode: str
 
 
-class TracklistAnalysis(BaseModel):
-    tracks: list[TrackAnalysis]
+class Tracklist(BaseModel):
+    tracks: list[Track]

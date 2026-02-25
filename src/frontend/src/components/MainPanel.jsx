@@ -32,7 +32,7 @@ export default function MainPanel() {
     ) : (
       <div className="tracks-pane">
         <Tracklist files={files}/>
-        <AnalysisPanel onReupload={() => fileInputRef.current.click()}/>
+        <AnalysisPanel files={files} onReupload={() => fileInputRef.current.click()}/>
       </div>
     )}
   </main>
