@@ -4,15 +4,12 @@ export default function Tracklist({ files }) {
     const tracks = getTracksfromFiles(files)
     return (
     <div>
-        <h3>Tracks</h3>
-        <ol>
-            {tracks.map(track => (
-                <li key={track}>
+        <h3 className="gold-text">Tracks</h3>
+        {tracks.map(track => (
+                <div key={track} style={{ borderBottom: "1px solid #b78727", padding: "8px 0" }}>
                     {track}
-                    <hr />
-                </li>
+                </div>
             ))}
-        </ol>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital:wght@300;400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
 
 :root {
@@ -7,7 +7,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: #fff8dc;
+  color: #dce5ff;
   background: linear-gradient(135deg, #11001C, #3A015C);
 
   font-synthesis: none;
@@ -37,12 +37,14 @@ h1 {
   font-size: 3.2rem;
   margin: 0;
   padding: 0;
+  justify-self: center;
 }
 
 h2 {
   font-size: 1.5rem;
   margin: 0;
   padding: 0;
+  margin-top: -1rem;
 }
 
 button {
@@ -57,14 +59,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  transform: scale(1.02);
-  transition: all 0.2s ease;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -91,7 +86,6 @@ button:focus-visible {
   padding: 0rem;
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
   align-items: center;
   justify-content: center;
 }
@@ -114,27 +108,43 @@ footer {
   /* padding: 0.5rem; */
 }
 
+.gold-text {
+    /* color: #b78727; */
+    background: linear-gradient(
+    45deg,
+    #c9a227,
+    #d9b85c,
+    #c9a227
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 
 #upload-button {
   height: 45vh;
   width: 40vw;
   font-size: larger;
-  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border: 3px dashed #b7872790;
   border-radius: 12px;
   text-align: center;
+}
+
+#upload-button:hover {
+  transform: scale(1.02);
+  transition: all 0.2s ease;
 }
 
 .tracks-pane  {
   text-align: left;
   overflow-y: auto;
   height: 100%;
-  /* height: 60vh; */
   width: 65vw;
   background: linear-gradient(135deg, #252525, #414141);
   border-radius: 6px;
   display: flex;
   gap: 3rem;
-  padding: 1.5rem;
+  padding: 0.5rem 1.5rem 1.5rem 1.5rem;
   justify-content: space-between;
   align-items: stretch;
 }
@@ -147,12 +157,33 @@ footer {
 .analysis-panel {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
 }
 
-#analysis-button {
-  background-color: #4f0147;
-  color: #ffffff;
+.analysis-button {
+  display: flex;
+  background: linear-gradient(
+    45deg,
+    #c9a227,
+    #d9b85c,
+    #c9a227
+  );
+  /* background-color: #4f0147; */
+  color: #000000;
+  justify-items: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+@keyframes slowRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating-disc {
+  animation: slowRotate 10s linear infinite;
+}
