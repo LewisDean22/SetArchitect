@@ -25,6 +25,37 @@ NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F',
               'F#', 'G', 'G#', 'A', 'A#', 'B']
 
 
+CAMELOT_MAP = {
+    # Major keys (B wheel)
+    "C Major":  "8B",
+    "G Major":  "9B",
+    "D Major":  "10B",
+    "A Major":  "11B",
+    "E Major":  "12B",
+    "B Major":  "1B",
+    "F# Major": "2B",
+    "C# Major": "3B",
+    "G# Major": "4B",
+    "D# Major": "5B",
+    "A# Major": "6B",
+    "F Major":  "7B",
+
+    # minor keys (A wheel)
+    "A minor":  "8A",
+    "E minor":  "9A",
+    "B minor":  "10A",
+    "F# minor": "11A",
+    "C# minor": "12A",
+    "G# minor": "1A",
+    "D# minor": "2A",
+    "A# minor": "3A",
+    "F minor":  "4A",
+    "C minor":  "5A",
+    "G minor":  "6A",
+    "D minor":  "7A",
+}
+
+
 def read_setlist_filepaths(mix_directory: str) -> list[str]:
     # isfile() is needed such tha subdirectory names aren't returned
     return [str(p) for p in Path(mix_directory).iterdir()
@@ -59,11 +90,15 @@ def detect_audio_key(audio: np.ndarray, sr: int) -> tuple[str, str]:
         rolled = np.roll(chroma_mean, -i)  # rotate to test each root note
         major_corr = np.corrcoef(rolled, MAJOR_PROFILE)[0, 1]
         minor_corr = np.corrcoef(rolled, MINOR_PROFILE)[0, 1]
-        correlations.append((NOTE_NAMES[i], "major", major_corr))
+        correlations.append((NOTE_NAMES[i], "Major", major_corr))
         correlations.append((NOTE_NAMES[i], "minor", minor_corr))
 
     best_match = max(correlations, key=lambda x: x[2])
     return best_match[0], best_match[1]  # e.g. ("A", "minor")
+
+
+def get_camelot_from_key(key: str, mode: str) -> str:
+    return CAMELOT_MAP[key+" "+mode]
 
 
 def detect_audio_tempo(audio: np.ndarray, sr: int) -> tuple[float, float]:
@@ -81,7 +116,8 @@ def perform_audio_analysis_on_file(filepath: str) -> Track:
                 track_name=extract_track_title(filepath),
                 bpm=round(tempo),
                 key=key,
-                mode=mode
+                mode=mode,
+                camelot=get_camelot_from_key(key, mode)
             )
 
 
@@ -94,7 +130,8 @@ def perform_audio_analysis_on_bytes(track_name: str, bytes: bytes) -> Track:
                 track_name=track_name,
                 bpm=round(tempo),
                 key=key,
-                mode=mode
+                mode=mode,
+                camelot=get_camelot_from_key(key, mode)
             )
 
 

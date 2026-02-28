@@ -139,7 +139,7 @@ footer {
   text-align: left;
   overflow-y: auto;
   height: 100%;
-  width: 65vw;
+  width: 85%;
   background: linear-gradient(135deg, #252525, #414141);
   border-radius: 6px;
   display: flex;
@@ -160,7 +160,7 @@ footer {
   align-items: center;
 }
 
-.analysis-button {
+.gold-button {
   display: flex;
   background: linear-gradient(
     45deg,

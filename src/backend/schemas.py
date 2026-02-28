@@ -11,6 +11,7 @@ class Track(BaseModel):
     bpm: int
     key: str
     mode: str
+    camelot: str
 
 
 class Tracklist(BaseModel):

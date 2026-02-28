@@ -3,8 +3,9 @@ export const track = {
   bpm: null,
   key: null,
   mode: null,
+  camelot: null
 }
 
 export const tracklist = {
-  tracks: [], // list of trackAnalysis objects
+  tracks: [] // list of trackAnalysis objects
 }

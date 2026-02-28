@@ -1,0 +1,28 @@
+.track-table {
+  border-collapse: collapse; /* removes default cell spacing */
+  background: linear-gradient(135deg, #252525, #414141);
+  border-radius: 6px;
+}
+
+.track-table-header {
+  text-align: center;
+  padding: 10px 16px;
+  border-bottom: 2px solid #333; /* divider between header and rows */
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: linear-gradient(
+    45deg,
+    #c9a227,
+    #d9b85c,
+    #c9a227
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border-bottom: 1px solid #b78727
+}
+
+.track-table-cell {
+  padding: 10px 16px;
+  border-bottom: 1px solid #222; /* row dividers */
+}
